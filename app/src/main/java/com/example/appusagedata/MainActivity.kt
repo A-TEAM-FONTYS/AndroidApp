@@ -11,28 +11,31 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import java.text.SimpleDateFormat
+import com.example.appusagedata.models.AppStatData
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZonedDateTime
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var tvUsageStats: TextView
+    var AppStatDataList = mutableListOf<AppStatData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         tvUsageStats = findViewById(R.id.tvUsageStats)
+
         if(checkUsageStatsPermission()){
             showUsageStats()
         }
         else{
+            //Navigate to settings to set permissions
             startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
         }
     }
@@ -40,39 +43,22 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun showUsageStats() {
         var usageStatManager: UsageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        var cal: Calendar = Calendar.getInstance(TimeZone.getTimeZone("CET"))
-        cal.add(Calendar.DAY_OF_MONTH, -1)
 
         val start = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
-        val end = ZonedDateTime.now().toInstant().toEpochMilli()
-
-//        var queryUsageStats: List<UsageStats> = usageStatManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, cal.timeInMillis,
-//        System.currentTimeMillis())
+        val end = ZonedDateTime.now().toInstant().toEpochMilli()\
 
         var queryUsageStats: List<UsageStats> = usageStatManager.queryUsageStats(UsageStatsManager.INTERVAL_WEEKLY, start, end)
 
         var statsData: String = ""
         for(i in 0..queryUsageStats.size-1){
             if(TimeUnit.MILLISECONDS.toMinutes(queryUsageStats.get(i).totalTimeInForeground) > 0){
-                statsData = statsData + "Packagename: " + queryUsageStats.get(i).packageName + "\n" +
-                        "Last time used: " + convertTime(queryUsageStats.get(i).lastTimeUsed) + "\n" +
-                        "Describe contents: " + queryUsageStats.get(i).describeContents()    + "\n" +
-                        "First time stamp: " + convertTime(queryUsageStats.get(i).firstTimeStamp) + "\n" +
-                        "Last time stamp: " + convertTime(queryUsageStats.get(i).lastTimeStamp) + "\n" +
-                        "Total time foreground: " + TimeUnit.MILLISECONDS.toMinutes(queryUsageStats.get(i).totalTimeInForeground) + " minutes \n\n"
+               var appStatData: AppStatData = AppStatData(queryUsageStats.get(i).packageName, queryUsageStats.get(i).totalTimeInForeground)
+                AppStatDataList.add(appStatData)
+                statsData = statsData + "App: " + appStatData.appName + "\n" +
+                                        "Time used: " + appStatData.timeUsed + " minutes\n\n"
             }
         }
-
-
         tvUsageStats.setText(statsData)
-    }
-
-    private fun convertTime(lastTimeUsed: Long): String {
-        var date: Date = Date(lastTimeUsed)
-        var format: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.ENGLISH)
-        format.setTimeZone(TimeZone.getTimeZone("CET"))
-
-        return format.format(date)
     }
 
     private fun checkUsageStatsPermission(): Boolean {
