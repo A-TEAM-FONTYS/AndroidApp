@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit
 class MainActivity : AppCompatActivity() {
 
     lateinit var tvUsageStats: TextView
+    lateinit var lstSocialMedia: List<String>
     var AppStatDataList = mutableListOf<AppStatData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         tvUsageStats = findViewById(R.id.tvUsageStats)
 
         if(checkUsageStatsPermission()){
+            lstSocialMedia = listOf(*resources.getStringArray(R.array.social_media_array))
             showUsageStats()
         }
         else{
@@ -45,17 +47,22 @@ class MainActivity : AppCompatActivity() {
         var usageStatManager: UsageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
 
         val start = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
-        val end = ZonedDateTime.now().toInstant().toEpochMilli()\
+        val end = ZonedDateTime.now().toInstant().toEpochMilli()
 
-        var queryUsageStats: List<UsageStats> = usageStatManager.queryUsageStats(UsageStatsManager.INTERVAL_WEEKLY, start, end)
+        var queryUsageStats: List<UsageStats> = usageStatManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, start, end)
 
-        var statsData: String = ""
+        var statsData = ""
         for(i in 0..queryUsageStats.size-1){
+            // If app time is more than 0 minutes
             if(TimeUnit.MILLISECONDS.toMinutes(queryUsageStats.get(i).totalTimeInForeground) > 0){
-               var appStatData: AppStatData = AppStatData(queryUsageStats.get(i).packageName, queryUsageStats.get(i).totalTimeInForeground)
-                AppStatDataList.add(appStatData)
-                statsData = statsData + "App: " + appStatData.appName + "\n" +
-                                        "Time used: " + appStatData.timeUsed + " minutes\n\n"
+               var appStatData = AppStatData(queryUsageStats.get(i).packageName, queryUsageStats.get(i).totalTimeInForeground)
+
+                // Check if app is a social media app
+                if(isSocialMedia(appStatData.appName)){
+                    AppStatDataList.add(appStatData)
+                    statsData = statsData + "App: " + appStatData.appName + "\n" +
+                            "Time used: " + appStatData.timeUsed + " minutes\n\n"
+                }
             }
         }
         tvUsageStats.setText(statsData)
@@ -69,5 +76,16 @@ class MainActivity : AppCompatActivity() {
 
         mode = appOpsManager.checkOpNoThrow(OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), packageName)
         return mode  == MODE_ALLOWED
+    }
+
+    private fun isSocialMedia(packageName: String): Boolean {
+        lstSocialMedia.forEach {
+                service ->
+            if (packageName.contains(service)){
+                return true
+            }
+        }
+
+        return false
     }
 }
