@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="social_media_array">
-        <item>Facebook</item>
-        <item>Reddit</item>
-        <item>Discord</item>
-        <item>Twitter</item>
-        <item>Imgur</item>
-        <item>Youtube</item>
-        <item>Linkedin</item>
-        <item>Instagram</item>
-        <item>Tinder</item>
-        <item>Netflix</item>
-        <item>Pinterest</item>
-        <item>Snapchat</item>
-        <item>Tumblr</item>
-        <item>TikTok</item>
+        <item>FACEBOOK</item>
+        <item>REDDIT</item>
+        <item>DISCORD</item>
+        <item>TWITTER</item>
+        <item>IMGUR</item>
+        <item>YOUTUBE</item>
+        <item>LINKEDIN</item>
+        <item>INSTAGRAM</item>
+        <item>TINDER</item>
+        <item>NETFLIX</item>
+        <item>PINTEREST</item>
+        <item>SNAPCHAT</item>
+        <item>TUMBLR</item>
+        <item>TIKTOK</item>
     </array>
 </resources>

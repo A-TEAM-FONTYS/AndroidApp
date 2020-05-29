@@ -1,0 +1,34 @@
+package com.example.appusagedata.fragments
+
+import androidx.lifecycle.ViewModelProviders
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.example.appusagedata.R
+import com.example.appusagedata.viewmodels.SignInViewModel
+
+
+class SignInFragment : Fragment() {
+
+    companion object {
+        fun newInstance() = SignInFragment()
+    }
+
+    private lateinit var viewModel: SignInViewModel
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.sign_in_fragment, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProviders.of(this).get(SignInViewModel::class.java)
+
+    }
+
+}

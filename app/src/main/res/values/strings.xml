@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">AppUsageData</string>
+    <string name="app_name">App Usage Data</string>
+    <string name="title">Let\u0027s collect your App Data!</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_username">Username</string>
+    <string name="sign_up_text_top">Don\u0027t have an account?</string>
+    <string name="sign_up_text_bottom">Create a new account</string>
 </resources>
