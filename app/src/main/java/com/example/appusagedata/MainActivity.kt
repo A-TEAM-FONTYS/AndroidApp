@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.appusagedata.fragments.DataFragment
 import com.example.appusagedata.fragments.SignInFragment
+import com.example.appusagedata.fragments.SignUpFragment
 import com.example.appusagedata.models.AppStatData
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         getSupportActionBar()?.hide()
-        loadFragment(SignInFragment())
+        loadFragment(SignUpFragment())
 
         if(!checkUsageStatsPermission()){
             //Navigate to settings to set permissions
@@ -40,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadFragment(fragment: Fragment?): Boolean {
+    fun loadFragment(fragment: Fragment?): Boolean {
         if (fragment != null) {
             supportFragmentManager
                 .beginTransaction()

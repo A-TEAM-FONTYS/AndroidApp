@@ -77,20 +77,20 @@
                 android:background="@color/colorGrey"/>
 
             <TextView
-                android:id="@+id/sign_up_text_top"
+                android:id="@+id/sign_in_text_top"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-black"
-                android:text="@string/sign_up_text_top"
+                android:text="@string/sign_in_text_top"
                 android:textAlignment="center"
                 android:textColor="@color/colorOuterSpace"
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/sign_up_text_bottom"
+                android:id="@+id/sign_in_text_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/sign_up_text_bottom"
+                android:text="@string/sign_in_text_bottom"
                 android:textAlignment="center"
                 android:textColor="@color/colorAnzac"
                 android:textSize="14sp" />

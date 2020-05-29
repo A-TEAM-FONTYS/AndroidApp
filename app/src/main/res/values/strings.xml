@@ -3,6 +3,10 @@
     <string name="title">Let\u0027s collect your App Data!</string>
     <string name="hint_password">Password</string>
     <string name="hint_username">Username</string>
-    <string name="sign_up_text_top">Don\u0027t have an account?</string>
-    <string name="sign_up_text_bottom">Create a new account</string>
+    <string name="hint_password_confirm">Confirm Password</string>
+    <string name="hint_email">Email</string>
+    <string name="sign_in_text_top">Don\u0027t have an account?</string>
+    <string name="sign_in_text_bottom">Create a new account</string>
+    <string name="sign_up_text_top">Already have an account?</string>
+    <string name="sign_up_text_bottom">Sign in</string>
 </resources>
