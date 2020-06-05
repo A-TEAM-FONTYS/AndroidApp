@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.example.appusagedata.MainActivity
 import com.example.appusagedata.R
 import com.example.appusagedata.viewmodels.SignInViewModel
 import kotlinx.android.synthetic.main.sign_in_fragment.*
@@ -28,6 +29,11 @@ class SignInFragment : Fragment() {
 
     override fun onStart() {
         sign_in_btn.setOnClickListener {
+            (activity as MainActivity?)?.loadFragment(DataFragment())
+        }
+
+        sign_in_text.setOnClickListener{
+            (activity as MainActivity?)?.loadFragment(SignUpFragment())
         }
         super.onStart()
     }

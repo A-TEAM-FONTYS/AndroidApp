@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         getSupportActionBar()?.hide()
-        loadFragment(SignUpFragment())
+        loadFragment(SignInFragment())
 
         if(!checkUsageStatsPermission()){
             //Navigate to settings to set permissions
