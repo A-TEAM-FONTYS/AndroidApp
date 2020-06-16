@@ -1,27 +1,28 @@
 package com.example.appusagedata.fragments
 
-import android.app.AppOpsManager
 import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
 import android.content.Context
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
+import android.widget.ListView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.anychart.AnyChart
 import com.anychart.AnyChartView
 import com.anychart.chart.common.dataentry.DataEntry
 import com.anychart.chart.common.dataentry.ValueDataEntry
 import com.anychart.charts.Pie
-import com.example.appusagedata.viewmodels.DataViewModel
 import com.example.appusagedata.R
+import com.example.appusagedata.adapters.CustomListAdapter
 import com.example.appusagedata.models.AppStatData
+import com.example.appusagedata.viewmodels.DataViewModel
 import kotlinx.android.synthetic.main.data_fragment.*
 import okhttp3.*
 import java.time.LocalDate
@@ -35,7 +36,6 @@ class DataFragment : Fragment() {
     var AppStatDataList = mutableListOf<AppStatData>()
     lateinit var chartDataUsage: AnyChartView
     lateinit var layoutChart: LinearLayout
-    lateinit var tvUsageStats: TextView
     lateinit var lstSocialMedia: List<String>
 
     companion object {
@@ -52,7 +52,6 @@ class DataFragment : Fragment() {
     }
 
     override fun onStart(){
-        tvUsageStats = view?.findViewById(R.id.tvUsageStats)!!
         chartDataUsage = view?.findViewById(R.id.chart_data_usage)!!
         layoutChart = view?.findViewById(R.id.layout_chart_data_usage)!!
         lstSocialMedia = listOf(*resources.getStringArray(R.array.social_media_array))
@@ -87,16 +86,18 @@ class DataFragment : Fragment() {
                 if(isSocialMedia(appStatData.appName.toUpperCase())){
                     if(!doesAppStatExist(appStatData)){
                         AppStatDataList.add(appStatData)
-                        statsData = statsData + "App: " + appStatData.appName + "\n" +
-                                "Time used: " + appStatData.timeUsed + " minutes\n\n"
+//                        statsData = statsData + "App: " + appStatData.appName + "\n" +
+//                                "Time used: " + appStatData.timeUsed + " minutes\n\n"
 
                     }
                 }
             }
         }
         setPieChart(AppStatDataList)
-        tvUsageStats.setText(statsData)
+        //tvUsageStats.setText(statsData)
+        showTableStats()
     }
+
     private fun doesAppStatExist(appStatData: AppStatData): Boolean {
         var result = false
 
@@ -164,6 +165,20 @@ class DataFragment : Fragment() {
         val ttb = AnimationUtils.loadAnimation(this.context, R.anim.top_to_bottom)
         layoutChart.startAnimation(ttb)
         layoutChart.visibility = View.VISIBLE
+    }
+
+    private fun showTableStats(){
+        val adapter = CustomListAdapter(activity,
+            AppStatDataList as java.util.ArrayList<AppStatData>?
+        )
+        var listView: ListView = view?.findViewById(R.id.list_data_stats)!!
+        listView.setAdapter(adapter)
+
+
+        var layoutList: LinearLayout= view?.findViewById(R.id.layout_list_data)!!
+        val ttb = AnimationUtils.loadAnimation(this.context, R.anim.top_to_bottom)
+        layoutList.startAnimation(ttb)
+        layoutList.visibility = View.VISIBLE
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

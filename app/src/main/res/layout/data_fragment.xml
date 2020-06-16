@@ -99,12 +99,14 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_list_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:orientation="vertical"
                 android:padding="10dp"
                 android:background="@drawable/card"
+                android:visibility="invisible"
                 >
                 <TextView
                     android:layout_width="match_parent"
@@ -114,15 +116,11 @@
                     android:textColor="@color/colorGreenMist"
                     android:text="@string/header_stats"/>
 
-                <TextView
-                    android:id="@+id/tvUsageStats"
+                <ListView
+                    android:id="@+id/list_data_stats"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:scrollbars="vertical"
-                    android:fontFamily="@font/roboto"
-                    android:textColor="@color/colorWhite"
-                    android:text="@string/app_usage_stats"/>
+                    android:layout_height="500dp"
+                    android:scrollbars="vertical"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
