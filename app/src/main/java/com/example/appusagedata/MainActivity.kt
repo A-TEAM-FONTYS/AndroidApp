@@ -12,12 +12,14 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.appusagedata.fragments.DataFragment
 import com.example.appusagedata.fragments.SignInFragment
 import com.example.appusagedata.fragments.SignUpFragment
+import com.example.appusagedata.handlers.LoginHandler
 import com.example.appusagedata.models.AppStatData
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
@@ -27,7 +29,7 @@ import java.time.ZonedDateTime
 import java.util.concurrent.TimeUnit
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity()  {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -52,6 +54,12 @@ class MainActivity : AppCompatActivity() {
         }
         return false
     }
+
+    fun login(email: String, pwd: String){
+        var result = LoginHandler().execute(email, pwd).get()
+        Log.d("Response", result)
+    }
+
 
     private fun checkUsageStatsPermission(): Boolean {
         var appOpsManager: AppOpsManager? = null

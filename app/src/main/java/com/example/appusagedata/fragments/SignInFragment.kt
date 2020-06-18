@@ -1,9 +1,11 @@
 package com.example.appusagedata.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.example.appusagedata.MainActivity
@@ -11,12 +13,7 @@ import com.example.appusagedata.R
 import com.example.appusagedata.viewmodels.SignInViewModel
 import kotlinx.android.synthetic.main.sign_in_fragment.*
 
-
 class SignInFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = SignInFragment()
-    }
 
     private lateinit var viewModel: SignInViewModel
 
@@ -29,7 +26,7 @@ class SignInFragment : Fragment() {
 
     override fun onStart() {
         sign_in_btn.setOnClickListener {
-            (activity as MainActivity?)?.loadFragment(DataFragment())
+            (activity as MainActivity?)?.login(username_text_edit.text.toString(), password_text_edit.text.toString())
         }
 
         sign_in_text.setOnClickListener{
@@ -37,6 +34,7 @@ class SignInFragment : Fragment() {
         }
         super.onStart()
     }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
