@@ -1,35 +1,23 @@
 package com.example.appusagedata
 
 import android.app.AppOpsManager
-import android.app.AppOpsManager.MODE_ALLOWED
-import android.app.AppOpsManager.OPSTR_GET_USAGE_STATS
-import android.app.usage.UsageStats
-import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
-import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.appusagedata.fragments.DataFragment
 import com.example.appusagedata.fragments.SignInFragment
-import com.example.appusagedata.fragments.SignUpFragment
 import com.example.appusagedata.handlers.LoginHandler
-import com.example.appusagedata.models.AppStatData
-import kotlinx.android.synthetic.main.activity_main.*
-import okhttp3.*
-import java.time.LocalDate
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.util.concurrent.TimeUnit
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
 
 
 class MainActivity : AppCompatActivity()  {
+    private lateinit var token: JSONObject
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -57,7 +45,28 @@ class MainActivity : AppCompatActivity()  {
 
     fun login(email: String, pwd: String){
         var result = LoginHandler().execute(email, pwd).get()
-        Log.d("Response", result)
+
+        if(isJSONValid(result)){
+            token = JSONObject(result)
+            loadFragment(DataFragment())
+        }
+        else{
+            val toast = Toast.makeText(applicationContext, result, Toast.LENGTH_SHORT)
+            toast.show()
+        }
+    }
+
+    private fun isJSONValid(json: String?): Boolean {
+        try {
+            JSONObject(json)
+        } catch (ex: JSONException) {
+            try {
+                JSONArray(json)
+            } catch (ex1: JSONException) {
+                return false
+            }
+        }
+        return true
     }
 
 

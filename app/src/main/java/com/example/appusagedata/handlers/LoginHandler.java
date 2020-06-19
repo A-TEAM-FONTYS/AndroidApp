@@ -15,15 +15,7 @@ public class LoginHandler extends AsyncTask<String, String, String> {
     protected String doInBackground(String... strings) {
         OkHttpClient client = new OkHttpClient();
         String url = "https://fitphone-ateam.herokuapp.com/auth/login";
-        String json = null;
-        try {
-            json = new JSONObject()
-                    .put("email", strings[0])
-                    .put("password", strings[1])
-                    .toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        String json = getJsonAsString(strings[0], strings[1]);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
 
         Request request = new Request.Builder()
@@ -39,13 +31,7 @@ public class LoginHandler extends AsyncTask<String, String, String> {
             e.printStackTrace();
         }
 
-        String responseString = null;
-        try {
-            responseString = response.body().string();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return responseString;
+        return getResponseString(response);
     }
 
     @Override
@@ -57,5 +43,36 @@ public class LoginHandler extends AsyncTask<String, String, String> {
     private String getResponse(String response) {
         //handle value
         return response;
+    }
+
+    private String getJsonAsString(String email, String password){
+        String json = null;
+        try {
+            json = new JSONObject()
+                    .put("email", email)
+                    .put("password", password)
+                    .toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return json;
+    }
+
+    private String getResponseString(Response response){
+        String responseString = null;
+        try {
+            responseString = response.body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if(response.code() == 400){
+            if(responseString != "Wrong credentials"){
+                responseString = "Something went wrong. Please try again or contact our support";
+            }
+        }
+
+        return responseString;
     }
 }

@@ -26,11 +26,10 @@ class SignInFragment : Fragment() {
 
     override fun onStart() {
         sign_in_btn.setOnClickListener {
-            (activity as MainActivity?)?.login(username_text_edit.text.toString(), password_text_edit.text.toString())
-        }
-
-        sign_in_text.setOnClickListener{
-            (activity as MainActivity?)?.loadFragment(SignUpFragment())
+            (activity as MainActivity?)?.login(
+                username_text_edit.text.toString(),
+                password_text_edit.text.toString()
+            )
         }
         super.onStart()
     }

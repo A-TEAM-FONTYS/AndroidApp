@@ -6,7 +6,7 @@
     <string name="hint_password_confirm">Confirm Password</string>
     <string name="hint_email">Email</string>
     <string name="sign_in_text_top">Don\u0027t have an account?</string>
-    <string name="sign_in_text_bottom">Create a new account</string>
+    <string name="sign_in_text_bottom">Visit our Website</string>
     <string name="sign_up_text_top">Already have an account?</string>
     <string name="sign_up_text_bottom">Sign in</string>
     <string name="header_stats">APP USAGE STATISTICS</string>
