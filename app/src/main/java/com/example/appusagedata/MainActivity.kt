@@ -5,19 +5,22 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.appusagedata.fragments.DataFragment
 import com.example.appusagedata.fragments.SignInFragment
+import com.example.appusagedata.handlers.AppStatHandler
 import com.example.appusagedata.handlers.LoginHandler
+import com.example.appusagedata.models.AppStatData
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
 
 class MainActivity : AppCompatActivity()  {
-    private lateinit var token: JSONObject
+    private lateinit var user: JSONObject
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -47,13 +50,18 @@ class MainActivity : AppCompatActivity()  {
         var result = LoginHandler().execute(email, pwd).get()
 
         if(isJSONValid(result)){
-            token = JSONObject(result)
+            user = JSONObject(result)
             loadFragment(DataFragment())
         }
         else{
             val toast = Toast.makeText(applicationContext, result, Toast.LENGTH_SHORT)
             toast.show()
         }
+    }
+
+    fun saveDataStat(stat: AppStatData){
+        var result = AppStatHandler().execute(stat.appName, stat.timeUsed.toString(), user.getString("token")).get()
+        Log.d("Response", result)
     }
 
     private fun isJSONValid(json: String?): Boolean {

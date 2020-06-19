@@ -19,6 +19,7 @@ import com.anychart.AnyChartView
 import com.anychart.chart.common.dataentry.DataEntry
 import com.anychart.chart.common.dataentry.ValueDataEntry
 import com.anychart.charts.Pie
+import com.example.appusagedata.MainActivity
 import com.example.appusagedata.R
 import com.example.appusagedata.adapters.CustomListAdapter
 import com.example.appusagedata.models.AppStatData
@@ -86,16 +87,15 @@ class DataFragment : Fragment() {
                 if(isSocialMedia(appStatData.appName.toUpperCase())){
                     if(!doesAppStatExist(appStatData)){
                         AppStatDataList.add(appStatData)
-//                        statsData = statsData + "App: " + appStatData.appName + "\n" +
-//                                "Time used: " + appStatData.timeUsed + " minutes\n\n"
 
                     }
                 }
             }
         }
+
         setPieChart(AppStatDataList)
-        //tvUsageStats.setText(statsData)
         showTableStats()
+        saveDataToDatabase(AppStatDataList)
     }
 
     private fun doesAppStatExist(appStatData: AppStatData): Boolean {
@@ -121,29 +121,10 @@ class DataFragment : Fragment() {
         return false
     }
 
-    private fun createRequestBody(appData : AppStatData): RequestBody {
-        return FormBody.Builder()
-            .add("appName", appData.appName)
-            .add("timeUsed", appData.timeUsed.toString())
-            .build()
-    }
-
-    private fun postData(appData : AppStatData) {
-        val request = Request.Builder()
-            .url("http://localhost:9092/data")
-            .post(createRequestBody(appData))
-            .build()
-
-
-        val call: Call = OkHttpClient().newCall(request)
-        val response: Response = call.execute()
-
-        Log.d("Post", response.toString())
-    }
 
     private fun saveDataToDatabase(lstAppStatData: MutableList<AppStatData>){
         lstAppStatData.forEach { appStat ->
-            postData(appStat)
+            (activity as MainActivity?)?.saveDataStat(appStat)
         }
     }
     private fun setPieChart(lstAppStatData: MutableList<AppStatData>){
